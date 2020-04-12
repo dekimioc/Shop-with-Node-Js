@@ -5,9 +5,11 @@ const rootDir = require('./helpers/path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const adminData = require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 // const expressHbs = require('express-handlebars'); requiering express-handlebars
+
+const errorController = require('./controllers/error');
 
 const app = express();
 
@@ -20,12 +22,10 @@ app.set('views', 'views');
 app.use(express.static(path.join(rootDir, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/admin', adminData.routes);
+app.use('/admin', adminRoutes);
 
 app.use(shopRoutes);
 
-app.use((req, res, next) => {
-    res.status(404).render('404page', { pageTitle: 'Page Not Found' });
-})
+app.use(errorController.get404Page)
 
 app.listen(5000);
