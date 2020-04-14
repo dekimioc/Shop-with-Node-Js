@@ -5,15 +5,19 @@ const p = path.join(path.dirname(process.mainModule.filename), 'data', 'products
 const getProductsFromFile = (cb) => {
     fs.readFile(p, (err, productsData) => {
         if (err) {
-            return cb([]);
+            cb([]);
+        } else {
+            cb(JSON.parse(productsData));
         }
-        cb(JSON.parse(productsData));
     });
 }
 
 module.exports = class Product {
-    constructor(title) {
+    constructor(title, imageUrl, price, description) {
         this.title = title;
+        this.imageUrl = imageUrl;
+        this.price = price;
+        this.description = description;
     }
 
     save() {
